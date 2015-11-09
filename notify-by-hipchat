@@ -1,0 +1,24 @@
+#!/bin/bash
+
+###############################################################################
+#
+# A script for send Nagios Notification to HipChat
+#
+# Inspired by: http://github.com/hipchat/hipchat-cli
+#
+###############################################################################
+
+# exit on failure
+set -e
+
+# Configuration
+HOST="XXXX.hipchat.com"
+TOKEN="XXXX"
+ROOM_ID=1234
+
+
+# do the curl
+curl -sS \
+	-H 'Content-type: application/json' \
+	-d "{\"color\":\"red\", \"message\":\"Testmessage\", \"message_format\":\"html\", \"notify\":true, \"from\":\"Service\"}" \
+	https://$HOST/v2/room/$ROOM_ID/notification?auth_token=$TOKEN
