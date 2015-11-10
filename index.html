@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Notify-by-hipchat : Send your Nagios notices to HipChat Room">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Notify-by-hipchat</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/svenkuegler/notify-by-hipchat">View on GitHub</a>
+
+          <h1 id="project_title">Notify-by-hipchat</h1>
+          <h2 id="project_tagline">Send your Nagios notices to HipChat Room</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/svenkuegler/notify-by-hipchat/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/svenkuegler/notify-by-hipchat/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="notify-by-hipchat" class="anchor" href="#notify-by-hipchat" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notify by HipChat</h1>
+
+<p>Send your Nagios notices to HipChat Room</p>
+
+<h2>
+<a id="configure-hipchat" class="anchor" href="#configure-hipchat" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configure HipChat</h2>
+
+<ol>
+<li>Login to <a href="http://www.hipchat.com">www.hipchat.com</a> with a Admin Account.</li>
+<li>Add an Integration</li>
+<li>Copy your Room-ID and Auth_Token</li>
+</ol>
+
+<h2>
+<a id="configure-nagios" class="anchor" href="#configure-nagios" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configure Nagios</h2>
+
+<ol>
+<li>
+<p>Install the Script.</p>
+
+<pre><code>$ cd ~
+$ git clone https://github.com/svenkuegler/notify-by-hipchat.git
+</code></pre>
+
+<p><em>Notice! This is only an Example. You allready can upload the script to any other Location.</em></p>
+</li>
+<li><p>Edit the script <strong>notify-by-hipchat</strong> and add your API-Key.</p></li>
+<li>
+<p>Add the following lines to your <strong>commands.cfg</strong></p>
+
+<pre><code>...
+</code></pre>
+</li>
+<li>
+<p>Add the HipChat notification to your <strong>contact.cfg</strong></p>
+
+<pre><code>...
+</code></pre>
+</li>
+</ol>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Notify-by-hipchat maintained by <a href="https://github.com/svenkuegler">svenkuegler</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
