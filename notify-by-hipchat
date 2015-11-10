@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ###############################################################################
 #
 # A script for send Nagios Notification to HipChat
@@ -16,9 +15,63 @@ HOST="XXXX.hipchat.com"
 TOKEN="XXXX"
 ROOM_ID=1234
 
+usage() {
+  cat << EOF
+Usage: echo "My Message" | $0 -l <NAGIOS_LEVEL>
+
+This script will read from stdin and send the contents to the given room as
+a system message.
+
+OPTIONS:
+   -h             Show this message
+   -i <input>     Optional: Input to send to room (default: stdin)
+   -l <level>     Nagios message level (critical, warning, unknown, ok, down, up).
+   -t <type>	  Nagios Notification Type (service, host)
+EOF
+}
+
+TYPE=""
+while getopts “h:i:l” OPTION; do
+  case $OPTION in
+    h) usage; exit 1;;
+    i) INPUT=$OPTARG;;
+    l) LEVEL=$OPTARG;;
+	t) TYPE=$OPTARG;;
+    [?]) usage; exit;;
+  esac
+done
+
+# nagios levels
+COLOR="gray"
+if [ ! -z "$LEVEL" ]; then
+  if [[ $LEVEL == 'CRITICAL' ]] || [[ $LEVEL == 'critical' ]]; then
+    COLOR="red";
+  elif [[ $LEVEL == 'WARNING' ]] || [[ $LEVEL == 'warning' ]]; then
+    COLOR="yellow";
+  elif [[ $LEVEL == 'UNKNOWN' ]] || [[ $LEVEL == 'unknown' ]]; then
+    COLOR="gray";
+  elif [[ $LEVEL == 'OK' ]] || [[ $LEVEL == 'ok' ]]; then
+    COLOR="green";
+  elif [[ $LEVEL == 'DOWN' ]] || [[ $LEVEL == 'down' ]]; then
+    COLOR="red";
+  elif [[ $LEVEL == 'UP' ]] || [[ $LEVEL == 'up' ]]; then
+    COLOR="green";
+  fi
+fi
+
+if [ -z "$INPUT" ]; then
+  # read stdin
+  INPUT=$(cat)
+fi
+
+# replace newlines with XHTML <br>
+INPUT=$(echo -n "${INPUT}" | sed "s/$/\<br\>/")
+
+# replace bare URLs with real hyperlinks
+INPUT=$(echo -n "${INPUT}" | perl -p -e "s/(?<!href=\"|href=')((?:https?|ftp|mailto)\:\/\/[^ \n]*)/\<a href=\"\1\"\>\1\<\/a>/g")
 
 # do the curl
 curl -sS \
 	-H 'Content-type: application/json' \
-	-d "{\"color\":\"red\", \"message\":\"Testmessage\", \"message_format\":\"html\", \"notify\":true, \"from\":\"Service\"}" \
+	-d "{\"color\":\"$COLOR\", \"message\":\"$INPUT\", \"message_format\":\"html\", \"notify\":true, \"from\":\"$TYPE\"}" \
 	https://$HOST/v2/room/$ROOM_ID/notification?auth_token=$TOKEN
