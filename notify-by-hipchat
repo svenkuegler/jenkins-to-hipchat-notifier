@@ -1,4 +1,4 @@
-#!/bin/bash
+ï»¿#!/bin/bash
 ###############################################################################
 #
 # A script for send Nagios Notification to HipChat
@@ -13,36 +13,12 @@ set -e
 # Configuration
 HOST="XXXX.hipchat.com"
 TOKEN="XXXX"
-ROOM_ID=1234
+ROOM_ID=XXXX
 
-usage() {
-  cat << EOF
-Usage: echo "My Message" | $0 -l <NAGIOS_LEVEL>
-
-This script will read from stdin and send the contents to the given room as
-a system message.
-
-OPTIONS:
-   -h             Show this message
-   -i <input>     Optional: Input to send to room (default: stdin)
-   -l <level>     Nagios message level (critical, warning, unknown, ok, down, up).
-   -t <type>	  Nagios Notification Type (service, host)
-EOF
-}
-
-TYPE=""
-while getopts “h:i:l” OPTION; do
-  case $OPTION in
-    h) usage; exit 1;;
-    i) INPUT=$OPTARG;;
-    l) LEVEL=$OPTARG;;
-	t) TYPE=$OPTARG;;
-    [?]) usage; exit;;
-  esac
-done
 
 # nagios levels
-COLOR="gray"
+if [ ! -z "$1" ]; then
+LEVEL=$1
 if [ ! -z "$LEVEL" ]; then
   if [[ $LEVEL == 'CRITICAL' ]] || [[ $LEVEL == 'critical' ]]; then
     COLOR="red";
@@ -57,6 +33,17 @@ if [ ! -z "$LEVEL" ]; then
   elif [[ $LEVEL == 'UP' ]] || [[ $LEVEL == 'up' ]]; then
     COLOR="green";
   fi
+fi
+else
+/bin/echo "Please send a Nagios Level. Usage: $0 <NAGIOS_LEVEL> <TYPE>"
+exit 1
+fi
+
+# From (Host or Service)
+if [ ! -z "$2" ]; then
+	TYPE=$2
+else
+	TYPE=""
 fi
 
 if [ -z "$INPUT" ]; then
